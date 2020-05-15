@@ -256,6 +256,7 @@ proc/make_chat_maptext(atom/target, msg, style = "")
 
 
 // temporary crap, you shouldn't see this
+//
 
 var/datum/text_benchmarking/text_benchmarking = new
 
