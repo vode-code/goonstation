@@ -253,3 +253,47 @@ proc/make_chat_maptext(atom/target, msg, style = "")
 		loc.maptext_x = loc_maptext_x
 		loc.maptext_y = loc_maptext_y
 		qdel(src)
+
+
+var/datum/text_benchmarking/text_benchmarking = new
+
+/datum/text_benchmarking
+	var/count = 1000
+	var/use_list = 0
+	var/use_browse = 0
+
+	Topic(href, href_list)
+		. = ..()
+		var/text = ""
+		if(use_list)
+			text = list()
+		for(var/i in 1 to count)
+			text += "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		if(use_list)
+			text = jointext(text, "")
+		if(use_browse == 2)
+			usr.Browse(text, "window=palitest")
+		else if(use_browse == 1)
+			usr << browse(text, "window=palitest")
+
+	proc/off_topic()
+		var/text = ""
+		if(use_list)
+			text = list()
+		for(var/i in 1 to count)
+			text += "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		if(use_list)
+			text = jointext(text, "")
+		if(use_browse == 2)
+			usr.Browse(text, "window=palitest")
+		else if(use_browse == 1)
+			usr << browse(text, "window=palitest")
+
+	proc/make_window()
+		usr.Browse({"<a href="?src=\ref[src]">click here</a><br>"}, "window=palitest")
+
+/mob/verb/benchmark_topic()
+	text_benchmarking.make_window()
+
+/mob/verb/benchmark_off_topic()
+	text_benchmarking.off_topic()
