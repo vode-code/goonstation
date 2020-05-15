@@ -255,6 +255,8 @@ proc/make_chat_maptext(atom/target, msg, style = "")
 		qdel(src)
 
 
+// temporary crap, you shouldn't see this
+
 var/datum/text_benchmarking/text_benchmarking = new
 
 /datum/text_benchmarking
