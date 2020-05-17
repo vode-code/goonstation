@@ -219,9 +219,9 @@ datum/preferences
 
 		sanitize_null_values()
 		update_preview_icon()
-		// user << browse_rsc(preview_icon, "previewicon.png")
-		// user << browse_rsc(icon(cursors_selection[target_cursor]), "tcursor.png")
-		// user << browse_rsc(icon(hud_style_selection[hud_style], "preview"), "hud_preview.png")
+		user << browse_rsc(preview_icon, "previewicon.png")
+		user << browse_rsc(icon(cursors_selection[target_cursor]), "tcursor.png")
+		user << browse_rsc(icon(hud_style_selection[hud_style], "preview"), "hud_preview.png")
 
 		var/display_gender = (src.gender == MALE ? "Male" : "Female") + " " + (!AH.pronouns ? (src.gender == MALE ? "(he/him)" : "(she/her)") : "(they/them)")
 
@@ -734,7 +734,7 @@ datum/preferences
 
 			if (changed)
 				update_preview_icon()
-				//usr << browse_rsc(preview_icon, "previewicon.png")
+				usr << browse_rsc(preview_icon, "previewicon.png")
 				usr << browse("previewicon.png","display=0")
 
 		..()
