@@ -1,4 +1,34 @@
 
+(t)sat may 16 20
+(u)UrsulaMajor
+(p)660
+(e)⚖|balance
+(*)Removed Bladder and Energy motives from RP. Made Hygiene motive cosmetic only.
+(u)mbc
+(p)714
+(e)⚖|balance
+(*)Self surgery does a bit more damage.
+(u)mbc
+(p)715
+(e)⚖|balance
+(*)Blocking reduces the chance of being disarmed. May be subject to change later!
+(u)zjdtmkhzt
+(p)710
+(e)⚖🆕|balance, enhancement
+(*)The mining z-level now has a map. Find it in your PDA!
+(t)fri may 15 20
+(u)TrustworthyFella
+(p)694
+(e)⚖|balance
+(+)Buffed derringer damage from 50 to 80. Higher falloff given to compensate.
+(u)Tarmunora
+(p)651
+(e)⚖|balance
+(+)Tweaked the delivery mechanism in shock grenades; they now smoke voltagen instead of leaving puddles behind.
+(u)Tarmunora
+(p)674
+(e)⚖|balance
+(+)Haloperidol is slightly better at tranquilizing.
 (t)thu may 14 20
 (u)Keiya
 (p)695
