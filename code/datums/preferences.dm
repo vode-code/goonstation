@@ -1,5 +1,12 @@
 var/list/bad_name_characters = list("_", "'", "\"", "<", ">", ";", "\[", "\]", "{", "}", "|", "\\", "/")
 
+var/global/forget_about_traits = 0
+mob/verb/toggle_forgetting_about_traits()
+	forget_about_traits = !forget_about_traits
+var/global/screw_savefile_profiles = 0
+mob/verb/toggle_screw_savefile_profiles()
+	screw_savefile_profiles = !screw_savefile_profiles
+
 datum/preferences
 	var/profile_name
 	var/profile_number
@@ -208,26 +215,30 @@ datum/preferences
 		underwear_s = null
 		eyes_s = null
 
+#define MESSAGE_TICK_USAGE message_admins("[__LINE__]: [world.tick_usage]")
+
 	proc/ShowChoices(mob/user)
-		LAGCHECK(LAG_HIGH)
+		//LAGCHECK(LAG_HIGH)
+		MESSAGE_TICK_USAGE
 
 		if(!user)
 			return
 
 		if (!AH)
 			boutput(usr, "Your settings are missing an AppearanceHolder. This is a good time to tell a coder.")
-
+		MESSAGE_TICK_USAGE
 		sanitize_null_values()
 		update_preview_icon()
 		user << browse_rsc(preview_icon, "previewicon.png")
 		user << browse_rsc(icon(cursors_selection[target_cursor]), "tcursor.png")
 		user << browse_rsc(icon(hud_style_selection[hud_style], "preview"), "hud_preview.png")
-
+		MESSAGE_TICK_USAGE
 		var/display_gender = (src.gender == MALE ? "Male" : "Female") + " " + (!AH.pronouns ? (src.gender == MALE ? "(he/him)" : "(she/her)") : "(they/them)")
 
 		var/favoriteJob = src.job_favorite ? find_job_in_controller_by_string(src.job_favorite) : ""
 		//mbc is sorry
 		var/chui_toggle_script_jqery_thing = (user && user.client && !user.client.use_chui) ? "<script type='text/javascript' src='[resource("js/jquery.min.js")]'></script>" : ""
+		MESSAGE_TICK_USAGE
 		var/script = {"
 				[chui_toggle_script_jqery_thing]
 				<script type='text/javascript'>
@@ -265,39 +276,42 @@ datum/preferences
 					})
 				});
 				</script>"}
-
-		LAGCHECK(LAG_HIGH)
+		MESSAGE_TICK_USAGE
+		//LAGCHECK(LAG_HIGH)
 		//mbc is sorry
 		//var/header_thing_chui_toggle = (user.client && !user.client.use_chui) ? "<html><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\"><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"pragma\" content=\"no-cache\"><style type='text/css'>body { font-family: Tahoma, sans-serif; font-size: 10pt; }</style></head><body>" : ""
 		//var/pref_link = "byond://?src=\ref[src];preferences=1;"
 		var/pref_link = "byond://?src=\ref[src];preferences=1;"
 
 		var/profile_menu[]
-
+		MESSAGE_TICK_USAGE
 		if (user && !IsGuestKey(user.key)) //ZeWaka: Fix for null.key
 			profile_menu += "<div id='cloudsaves'><strong>Cloud Saves</strong><hr>"
 			var/client/wtf = ismob( user ) ? user.client : user
 			for( var/name in wtf.cloudsaves )
 				profile_menu += "<a href='[pref_link]cloudload=[url_encode(name)]'>[html_encode(name)]</a> (<a href='[pref_link]cloudsave=[url_encode(name)]'>Save</a> - <a href='[pref_link]clouddelete=[url_encode(name)]'>Delete</a>)<br>"
-				LAGCHECK(LAG_REALTIME)
+				//LAGCHECK(LAG_REALTIME)
+				MESSAGE_TICK_USAGE
 			profile_menu += "<a href='[pref_link]cloudnew=1'>Create new save</a></div>"
-
+			MESSAGE_TICK_USAGE
 			profile_menu += {"
 <div id="profiles">
 "}
-			for (var/i = 1, i <= SAVEFILE_PROFILES_MAX, i++)
-				profile_menu += {"
-	<div[i == src.profile_number ? " id='profiles-active'" : ""]><a href='[pref_link]load=[i]'>Profile [i]</a>
-	<br><strong>[savefile_get_profile_name(user, i) || "<em>(empty)</em>"]</strong>
-	<br><a href='[pref_link]save=[i]'>Save</a> &middot; <a href='[pref_link]load=[i]'>Load</a></div>
-				"}
-
-			profile_menu += "</div>"
+			if(!screw_savefile_profiles)
+				for (var/i = 1, i <= SAVEFILE_PROFILES_MAX, i++)
+					profile_menu += {"
+		<div[i == src.profile_number ? " id='profiles-active'" : ""]><a href='[pref_link]load=[i]'>Profile [i]</a>
+		<br><strong>[savefile_get_profile_name(user, i) || "<em>(empty)</em>"]</strong>
+		<br><a href='[pref_link]save=[i]'>Save</a> &middot; <a href='[pref_link]load=[i]'>Load</a></div>
+					"}
+				profile_menu += "</div>"
+			MESSAGE_TICK_USAGE
+		MESSAGE_TICK_USAGE
 
 		var/unsaved_changes_warning = ""
 		if (src.profile_modified)
 			unsaved_changes_warning = {"<div id="unsaved-warning"><strong>You may have unsaved changes.</strong><br>Any unsaved changes will take effect for this round only.</div> "}
-
+		MESSAGE_TICK_USAGE
 		var/dat = {"
 [script]
 <style type="text/css">
@@ -686,12 +700,16 @@ datum/preferences
 	<br><a href='[pref_link]reset_all=1'>Reset All</a> - <a href='[pref_link]real_name=random'>Randomize</a><br>
 
 "}
+		MESSAGE_TICK_USAGE
 
-		LAGCHECK(LAG_MED)
-		traitPreferences.updateTraits(user)
-		LAGCHECK(LAG_REALTIME)
+		//LAGCHECK(LAG_MED)
+		if(!forget_about_traits)
+			traitPreferences.updateTraits(user)
+		//LAGCHECK(LAG_REALTIME)
+		MESSAGE_TICK_USAGE
 
 		user.Browse(dat,"window=preferences;size=666x750;title=Character Setup")
+		MESSAGE_TICK_USAGE
 
 
 	//id, The name of the Select table ID to be used.
