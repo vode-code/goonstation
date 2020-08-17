@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;area - Goon Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Goon Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="area.html#var">Var Details</a> - <a href="area.html#proc">Proc Details</a></header>
+<main>
+<h1>Space <aside>/<a href="area.html">area</a></aside><aside> inherits /<a href="atom.html">atom</a></aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L18">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 18"/></a></h1>
+
+<p>Base area definition</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="area.html#var/being_captured">being_captured</a></th><td>is this a gang's base (uncaptureable)?</td></tr>
+            <tr><th><a href="area.html#var/blocked">blocked</a></th><td>set to TRUE to inhibit attacks in this area.</td></tr>
+            <tr><th><a href="area.html#var/blockedTimers">blockedTimers</a></th><td>if set and a blocked person makes their way into here via Bad Ways, they'll be teleported here instead of nullspace. use a path!</td></tr>
+            <tr><th><a href="area.html#var/blocked_waypoint">blocked_waypoint</a></th><td>set to TRUE to inhibit entrance into this area, may not work completely yet.</td></tr>
+            <tr><th><a href="area.html#var/filler_turf">filler_turf</a></th><td>for gang mode</td></tr>
+            <tr><th><a href="area.html#var/gang_base">gang_base</a></th><td>gang that owns this area in gang mode</td></tr>
+            <tr><th><a href="area.html#var/gang_owners">gang_owners</a></th><td>don't irradiate this place!!</td></tr>
+            <tr><th><a href="area.html#var/gencolor">gencolor</a></th><td>for escape checks</td></tr>
+            <tr><th><a href="area.html#var/light_manager">light_manager</a></th><td>for Battle Royale gamemode</td></tr>
+            <tr><th><a href="area.html#var/population">population</a></th><td>TRUE if a dude is here (DOES NOT APPLY TO THE &quot;SPACE&quot; AREA)</td></tr>
+            <tr><th><a href="area.html#var/registered_critters">registered_critters</a></th><td>Do people work here?</td></tr>
+            <tr><th><a href="area.html#var/teleport_blocked">teleport_blocked</a></th><td>if set, replacewithspace in this area instead replaces with this turf type</td></tr>
+            <tr><th><a href="area.html#var/workplace">workplace</a></th><td>Cannot teleport into this area without some explicit set_loc thing. 1 for most things, 2 for definitely everything.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="area.html#proc/clear_usage">clear_usage</a></th><td>sets all current usage of power to 0</td></tr>
+            <tr><th><a href="area.html#proc/find_middle">find_middle</a></th><td>Returns the turf in the middle of the area. Returns null if none can be found.</td></tr>
+            <tr><th><a href="area.html#proc/firealert">firealert</a></th><td>Causes a fire alert in the area if there is not one already set. Notifies AIs.</td></tr>
+            <tr><th><a href="area.html#proc/firereset">firereset</a></th><td>Resets the fire alert in the area. Notifies AIs.</td></tr>
+            <tr><th><a href="area.html#proc/power_change">power_change</a></th><td>Called when power status changes. Updates machinery and the icon of the area.</td></tr>
+            <tr><th><a href="area.html#proc/poweralert">poweralert</a></th><td>Causes a power alert in the area. Notifies AIs.</td></tr>
+            <tr><th><a href="area.html#proc/powered">powered</a></th><td>Determines is an area is powered or not.
+chan - the power channel, possibilities: (EQUIP, LIGHT, ENVIRON)
+return true if the area has power to given channel, false otherwise, null if channel was not specified</td></tr>
+            <tr><th><a href="area.html#proc/updateicon">updateicon</a></th><td>Updates the icon of the area. Mainly used for flashing it red or blue. See: old party lights</td></tr>
+            <tr><th><a href="area.html#proc/usage">usage</a></th><td>Returns the current usage of the specified channel
+required - chan - the power channel, possibilities: (EQUIP, LIGHT, ENVIRON, TOTAL)</td></tr>
+            <tr><th><a href="area.html#proc/use_power">use_power</a></th><td>Uses the specified ammount of power for the specified channel</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/being_captured"><aside class="declaration">var </aside>being_captured
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L68">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 68"/></a></h3>
+        <p>is this a gang's base (uncaptureable)?</p><h3 id="var/blocked"><aside class="declaration">var </aside>blocked
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L89">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 89"/></a></h3>
+        <p>set to TRUE to inhibit attacks in this area.</p><h3 id="var/blockedTimers"><aside class="declaration">var </aside>blockedTimers
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L91">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 91"/></a></h3>
+        <p>if set and a blocked person makes their way into here via Bad Ways, they'll be teleported here instead of nullspace. use a path!</p><h3 id="var/blocked_waypoint"><aside class="declaration">var </aside>blocked_waypoint
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L90">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 90"/></a></h3>
+        <p>set to TRUE to inhibit entrance into this area, may not work completely yet.</p><h3 id="var/filler_turf"><aside class="declaration">var </aside>filler_turf
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L70">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 70"/></a></h3>
+        <p>for gang mode</p><h3 id="var/gang_base"><aside class="declaration">var </aside>gang_base
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L67">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 67"/></a></h3>
+        <p>gang that owns this area in gang mode</p><h3 id="var/gang_owners"><aside class="declaration">var </aside>gang_owners
+            <aside>&ndash; /<a href="datum.html">datum</a>/gang</aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L66">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 66"/></a></h3>
+        <p>don't irradiate this place!!</p><h3 id="var/gencolor"><aside class="declaration">var </aside>gencolor
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L28">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 28"/></a></h3>
+        <p>for escape checks</p><h3 id="var/light_manager"><aside class="declaration">var </aside>light_manager
+            <aside>&ndash; /<a href="obj.html">obj</a>/machinery/light_area_manager</aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L94">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 94"/></a></h3>
+        <p>for Battle Royale gamemode</p><h3 id="var/population"><aside class="declaration">var </aside>population
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L20">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 20"/></a></h3>
+        <p>TRUE if a dude is here (DOES NOT APPLY TO THE &quot;SPACE&quot; AREA)</p><h3 id="var/registered_critters"><aside class="declaration">var </aside>registered_critters
+            <aside>&ndash; /list/obj/critter</aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L76">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 76"/></a></h3>
+        <p>Do people work here?</p><h3 id="var/teleport_blocked"><aside class="declaration">var </aside>teleport_blocked
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L72">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 72"/></a></h3>
+        <p>if set, replacewithspace in this area instead replaces with this turf type</p><h3 id="var/workplace"><aside class="declaration">var </aside>workplace
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L74">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 74"/></a></h3>
+        <p>Cannot teleport into this area without some explicit set_loc thing. 1 for most things, 2 for definitely everything.</p><h2 id="proc">Proc Details</h2><h3 id="proc/clear_usage"><aside class="declaration">proc </aside>clear_usage<aside>() 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3257">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3257"/></a></aside>
+        </h3>
+        <p>sets all current usage of power to 0</p><h3 id="proc/find_middle"><aside class="declaration">proc </aside>find_middle<aside>(mustbeinside) 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L205">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 205"/></a></aside>
+        </h3>
+        <p>Returns the turf in the middle of the area. Returns null if none can be found.</p><h3 id="proc/firealert"><aside class="declaration">proc </aside>firealert<aside>() 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3157">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3157"/></a></aside>
+        </h3>
+        <p>Causes a fire alert in the area if there is not one already set. Notifies AIs.</p><h3 id="proc/firereset"><aside class="declaration">proc </aside>firereset<aside>() 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3181">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3181"/></a></aside>
+        </h3>
+        <p>Resets the fire alert in the area. Notifies AIs.</p><h3 id="proc/power_change"><aside class="declaration">proc </aside>power_change<aside>() 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3232">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3232"/></a></aside>
+        </h3>
+        <p>Called when power status changes. Updates machinery and the icon of the area.</p><h3 id="proc/poweralert"><aside class="declaration">proc </aside>poweralert<aside>(state, source) 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3139">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3139"/></a></aside>
+        </h3>
+        <p>Causes a power alert in the area. Notifies AIs.</p><h3 id="proc/powered"><aside class="declaration">proc </aside>powered<aside>(chan) 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3217">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3217"/></a></aside>
+        </h3>
+        <p>Determines is an area is powered or not.
+chan - the power channel, possibilities: (EQUIP, LIGHT, ENVIRON)
+return true if the area has power to given channel, false otherwise, null if channel was not specified</p><h3 id="proc/updateicon"><aside class="declaration">proc </aside>updateicon<aside>() 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3200">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3200"/></a></aside>
+        </h3>
+        <p>Updates the icon of the area. Mainly used for flashing it red or blue. See: old party lights</p><h3 id="proc/usage"><aside class="declaration">proc </aside>usage<aside>(chan) 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3243">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3243"/></a></aside>
+        </h3>
+        <p>Returns the current usage of the specified channel
+required - chan - the power channel, possibilities: (EQUIP, LIGHT, ENVIRON, TOTAL)</p><h3 id="proc/use_power"><aside class="declaration">proc </aside>use_power<aside>(amount, chan) 
+        
+    
+            <a href="https://github.com/vode-code/goonstation/blob/bb3f4d31c2664eeab7720e1ae49271942c6eb285/code/area.dm#L3268">
+        <img src="git.png" width="16" height="16" title="code&#x2F;area.dm 3268"/></a></aside>
+        </h3>
+        <p>Uses the specified ammount of power for the specified channel</p>
+<p>required - amount - the amt. of power to use
+required - chan - the power channel, possibilities: (EQUIP, LIGHT, ENVIRON)</p></main>
+<footer>
+    goonstation.dme
+    <a href="https://github.com/vode-code/goonstation/tree/bb3f4d31c2664eeab7720e1ae49271942c6eb285">bb3f4d3</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.2.2</a></footer>
+</body>
+</html>
