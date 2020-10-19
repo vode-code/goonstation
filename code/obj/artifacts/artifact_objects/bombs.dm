@@ -1,5 +1,6 @@
 // base
 
+ABSTRACT_TYPE(/datum/artifact/bomb)
 /datum/artifact/bomb
 	associated_object = null
 	rarity_class = 0
@@ -48,12 +49,13 @@
 				playsound(T, alarm_final, 100, 1, -1)
 			animate_flash_color_fill(O,flascustomization_first_color,10,3)
 
-			SPAWN_DBG(3 SECONDS)
-				T = get_turf(O)
-				if (src.activated)
-					deploy_payload(O)
-				else
-					T.visible_message("<b><span class='notice'>[O] [text_disarmed]</b></span>")
+			sleep(3 SECONDS)
+
+			T = get_turf(O)
+			if (src.activated)
+				deploy_payload(O)
+			else
+				T.visible_message("<b><span class='notice'>[O] [text_disarmed]</b></span>")
 
 	proc/deploy_payload(var/obj/O)
 		if (!O)
@@ -141,9 +143,7 @@
 
 	New()
 		..()
-		var/datum/reagents/R = new/datum/reagents(1000)
-		reagents = R
-		R.my_atom = src
+		src.create_reagents(1000)
 
 /datum/artifact/bomb/chemical
 	associated_object = /obj/artifact/bomb/chemical
@@ -216,9 +216,9 @@
 				s.set_up(O.reagents.total_volume, location, O.reagents, 0)
 				s.start()
 			if(1)
-				O.reagents.smoke_start(10)
+				O.reagents.smoke_start(50)
 			if(2)
-				O.reagents.smoke_start(10,1)
+				O.reagents.smoke_start(50,1)
 			if(3)
 				location.fluid_react(O.reagents, O.reagents.total_volume)
 

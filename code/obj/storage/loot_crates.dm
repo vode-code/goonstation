@@ -118,7 +118,7 @@
 							items += /obj/critter/fermid
 							item_amounts += 1
 				else
-					picker = rand(1,6)
+					picker = rand(1,7)
 					switch(picker)
 						if(1)
 							items += /obj/item/breaching_charge/mining
@@ -141,6 +141,13 @@
 							items += pick(/obj/item/raw_material/syreline,/obj/item/raw_material/bohrum,
 							/obj/item/raw_material/claretine,/obj/item/raw_material/cerenkite)
 							item_amounts += 40
+						if(6)
+							items += /obj/item/radio_tape/advertisement/cargonia
+							item_amounts += 1
+							items += /obj/item/clothing/under/rank/cargo
+							item_amounts += 1
+							items += /obj/decal/skeleton
+							item_amounts += 1
 						else
 							items += /obj/critter/rockworm
 							item_amounts += 3
@@ -409,6 +416,7 @@
 	var/attempts_remaining = 0
 
 	New()
+		..()
 		scramble_code()
 
 	proc/attempt_to_open(var/mob/living/opener)
@@ -638,10 +646,14 @@
 	icon_state = "bracelet"
 	material_prints = "patterned scratches"
 	w_class = 1
+	var/primary = TRUE
 	var/image/gemstone = null
 	var/obj/item/clothing/gloves/psylink_bracelet/twin
 
 	New()
+		..()
+		if(!primary)
+			return
 		src.gemstone = image('icons/obj/items/items.dmi',"bracelet-gem")
 		var/obj/item/clothing/gloves/psylink_bracelet/two = new /obj/item/clothing/gloves/psylink_bracelet/secondary(src.loc)
 		two.gemstone = image('icons/obj/items/items.dmi',"bracelet-gem")
@@ -687,9 +699,7 @@
 				boutput(psy, "<span class='notice'>The strange hallcuinations suddenly stop. That was weird.</span>")
 
 /obj/item/clothing/gloves/psylink_bracelet/secondary
-
-	New()
-		return
+	primary = FALSE
 
 /mob/proc/get_psychic_link()
 	return null
@@ -723,6 +733,7 @@
 		else
 			if (pick_from_these_files.len)
 				info = file2text(pick(pick_from_these_files))
+		..()
 
 /obj/item/paper/loot_crate_letters/generic_science
 	name = "scientific document"

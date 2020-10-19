@@ -77,7 +77,8 @@
 	New()
 		START_TRACKING
 		..()
-		src.area_name = src.loc.loc.name
+		var/area/area = get_area(src)
+		src.area_name = area?.name
 		src.transmit_connection = radio_controller.add_object(src,"[frequency]")
 		src.net_id = generate_net_id(src)
 
@@ -88,10 +89,7 @@
 		for (var/turf/T in view(5,src))
 			nearby_turfs += T
 
-		var/datum/reagents/R = new/datum/reagents(1000)
-		reagents = R
-		R.maximum_volume = 1000
-		R.my_atom = src
+		src.create_reagents(1000)
 
 		src.work_display = image('icons/obj/manufacturer.dmi', "")
 		src.activity_display = image('icons/obj/manufacturer.dmi', "")
@@ -185,9 +183,10 @@
 
 	proc/finish_work()
 
-		output_loop(src.queue[1])
-		if (!src.repeat)
-			src.queue -= src.queue[1]
+		if(length(src.queue))
+			output_loop(src.queue[1])
+			if (!src.repeat)
+				src.queue -= src.queue[1]
 
 		if (src.queue.len < 1)
 			src.manual_stop = 0
@@ -490,7 +489,7 @@
 				dat+="<B>Current Funds</B>: [account.fields["current_money"]] Credits<br>"
 		dat+= src.temp
 		dat += "<HR><B>Ores Available for Purchase:</B><br><small>"
-		for(var/obj/machinery/ore_cloud_storage_container/S in by_type[/obj/machinery/ore_cloud_storage_container])
+		for_by_tcl(S, /obj/machinery/ore_cloud_storage_container)
 			if(S.broken)
 				continue
 			dat += "<B>[S.name] at [get_area(S)]:</B><br>"
@@ -1855,6 +1854,7 @@
 
  	//TODO : pooling i guess cause other paper does
 	New(var/loc,var/schematic = null)
+		..()
 		if(istype(schematic, /datum/manufacture))
 			src.blueprint = schematic
 		else if (!schematic)
@@ -2053,6 +2053,7 @@
 	/datum/manufacture/firebot,
 	/datum/manufacture/floorbot,
 	/datum/manufacture/cleanbot,
+	/datum/manufacture/digbot,
 	/datum/manufacture/visor,
 	/datum/manufacture/deafhs,
 	/datum/manufacture/robup_jetpack,
@@ -2073,6 +2074,7 @@
 	/datum/manufacture/implant_robotalk,
 	/datum/manufacture/sbradio,
 	/datum/manufacture/implant_health,
+	/datum/manufacture/implant_antirot,
 	/datum/manufacture/cyberappendix,
 	/datum/manufacture/cyberpancreas,
 	/datum/manufacture/cyberspleen,
@@ -2134,6 +2136,7 @@
 		/datum/manufacture/body_bag,
 		/datum/manufacture/implanter,
 		/datum/manufacture/implant_health,
+		/datum/manufacture/implant_antirot,
 		/datum/manufacture/crowbar,
 		/datum/manufacture/extinguisher,
 		/datum/manufacture/cyberappendix,
@@ -2169,6 +2172,7 @@
 	/datum/manufacture/powerhammer,
 	/datum/manufacture/drill,
 	/datum/manufacture/conc_gloves,
+	/datum/manufacture/digbot,
 	/datum/manufacture/jumpsuit,
 	/datum/manufacture/shoes,
 	/datum/manufacture/breathmask,
@@ -2361,6 +2365,49 @@
 
 	hidden = list(/datum/manufacture/classcrate)
 
+/obj/machinery/manufacturer/zombie_survival
+	name = "Uber-Extreme Survival Manufacturer"
+	desc = "A manufacturing unit calibrated to produce items useful in surviving extreme scenarios."
+	icon_state = "fab-crates"
+	icon_base = "crates"
+	free_resource_amt = 50
+	free_resources = list(/obj/item/material_piece/cloth/cottonfabric,/obj/item/material_piece/mauxite,/obj/item/material_piece/pharosium,/obj/item/material_piece/molitz)
+	accept_blueprints = 0
+	available = list(
+	/datum/manufacture/engspacesuit,
+	/datum/manufacture/breathmask,
+	/datum/manufacture/suture,
+	/datum/manufacture/scalpel,
+	/datum/manufacture/flashlight,
+	/datum/manufacture/armor_vest,
+	/datum/manufacture/bullet_22,
+	/datum/manufacture/harmonica,
+	/datum/manufacture/clock,	// /obj/item/gun/kinetic/clock_188
+	/datum/manufacture/clock_ammo,	// /obj/item/ammo/bullets/nine_mm_NATO
+	/datum/manufacture/saa,	// /obj/item/gun/kinetic/colt_saa
+	/datum/manufacture/saa_ammo,	// /obj/item/ammo/bullets/c_45
+	/datum/manufacture/riot_launcher,	// /obj/item/gun/kinetic/riot40mm
+	/datum/manufacture/riot_launcher_ammo_pbr,	// /obj/item/ammo/bullets/pbr
+	/datum/manufacture/riot_launcher_ammo_flashbang,	// /obj/item/chem_grenade/flashbang
+	/datum/manufacture/riot_launcher_ammo_tactical,
+	/datum/manufacture/sniper,	// /obj/item/gun/kinetic/sniper
+	/datum/manufacture/sniper_ammo,	// /obj/item/ammo/bullets/rifle_762_NATO
+	/datum/manufacture/tac_shotgun,	// /obj/item/gun/kinetic/tactical_shotgun
+	/datum/manufacture/tac_shotgun_ammo,	// /obj/item/ammo/bullets/buckshot_burst
+	/datum/manufacture/gyrojet,	// /obj/item/gun/kinetic/gyrojet
+	/datum/manufacture/gyrojet_ammo,	// /obj/item/ammo/bullets/gyrojet
+	/datum/manufacture/plank,	// /obj/item/plank
+	/datum/manufacture/brute_kit,	// /obj/item/storage/firstaid/brute
+	/datum/manufacture/burn_kit,	// /obj/item/storage/firstaid/fire
+	/datum/manufacture/crit_kit, // /obj/item/storage/firstaid/crit
+	/datum/manufacture/spacecillin,	// /obj/item/reagent_containers/syringe/antiviral
+	/datum/manufacture/bat,	// /obj/item/bat
+	/datum/manufacture/quarterstaff,	//	/obj/item/quarterstaff
+	/datum/manufacture/cleaver,	// /obj/item/kitchen/utensil/knife/cleaver
+	/datum/manufacture/fireaxe,	// /obj/item/fireaxe
+	/datum/manufacture/shovel	// /obj/item/shovel	//this is powerful
+	)
+
 #undef WIRE_EXTEND
 #undef WIRE_POWER
 #undef WIRE_MALF
@@ -2416,8 +2463,7 @@
 
 /proc/build_manufacturer_icons()
 	// pre-build all the icons for shit manufacturers make
-	for (var/type in typesof(/datum/manufacture))
-		var/datum/manufacture/P = type
+	for (var/datum/manufacture/P as() in typesof(/datum/manufacture))
 		if (ispath(P, /datum/manufacture/mechanics))
 			var/datum/manufacture/mechanics/M = P
 			if (!initial(M.frame_path))
@@ -2430,5 +2476,5 @@
 			// but the fact it's a list seems to not really go well with it
 			// maybe someone else can get it to work.
 			var/datum/manufacture/I = new P
-			if (I && I.item_outputs[1])
+			if (I && length(I.item_outputs) && I.item_outputs[1])
 				getItemIcon(I.item_outputs[1])

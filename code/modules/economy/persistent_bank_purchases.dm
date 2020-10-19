@@ -26,10 +26,7 @@ var/global/list/persistent_bank_purchaseables =	list(\
 	new /datum/bank_purchaseable/bp_randoseru,\
 	new /datum/bank_purchaseable/bp_anello,\
 	new /datum/bank_purchaseable/nt_backpack,\
-	new /datum/bank_purchaseable/lizard,\
-	new /datum/bank_purchaseable/cow,\
-	new /datum/bank_purchaseable/skeleton,\
-	new /datum/bank_purchaseable/roach,\
+
 	new /datum/bank_purchaseable/limbless,\
 	new /datum/bank_purchaseable/corpse,\
 	new /datum/bank_purchaseable/space_diner,\
@@ -335,54 +332,6 @@ var/global/list/persistent_bank_purchaseables =	list(\
 
 			return 0
 
-	lizard
-		name = "Reptillian"
-		cost = 3000
-
-		Create(var/mob/living/M)
-			if (ishuman(M))
-				var/mob/living/carbon/human/H = M
-				if (H.bioHolder)
-					H.bioHolder.AddEffect("lizard")
-					return 1
-			return 0
-
-	cow
-		name = "Cow"
-		cost = 4000
-
-		Create(var/mob/living/M)
-			if (ishuman(M))
-				var/mob/living/carbon/human/H = M
-				if (H.bioHolder)
-					H.bioHolder.AddEffect("cow")
-					return 1
-			return 0
-
-	skeleton
-		name = "Skeleton"
-		cost = 5000
-
-		Create(var/mob/living/M)
-			if (ishuman(M))
-				var/mob/living/carbon/human/H = M
-				if (H.bioHolder)
-					H.bioHolder.AddEffect("skeleton")
-					return 1
-			return 0
-
-	roach
-		name = "Roach"
-		cost = 5000
-
-		Create(var/mob/living/M)
-			if (ishuman(M))
-				var/mob/living/carbon/human/H = M
-				if (H.bioHolder)
-					H.bioHolder.AddEffect("roach")
-					return 1
-			return 0
-
 	limbless
 		name = "No Limbs"
 		cost = 10000
@@ -451,7 +400,6 @@ var/global/list/persistent_bank_purchaseables =	list(\
 		cost = 20000
 
 		Create(var/mob/living/M)
-			var/obj/arrival_missile/missile = unpool(/obj/arrival_missile)
 			if(istype(M.back, /obj/item/storage))
 				var/obj/item/storage/backpack = M.back
 				new /obj/item/tank/emergency_oxygen(backpack) // oh boy they'll need this if they are unlucky
@@ -459,8 +407,11 @@ var/global/list/persistent_bank_purchaseables =	list(\
 			var/mob/living/carbon/human/H = M
 			if(istype(H))
 				H.equip_new_if_possible(/obj/item/clothing/mask/breath, SLOT_WEAR_MASK)
-			missile.reset_to_random_pos()
-			missile.lunch(M)
+			SPAWN_DBG(0)
+				if(istype(M.loc, /obj/storage))
+					launch_with_missile(M.loc)
+				else
+					launch_with_missile(M)
 			return 1
 
 	critter_respawn

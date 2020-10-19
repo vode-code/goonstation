@@ -125,7 +125,7 @@ var/list/ai_emotions = list("Happy" = "ai_happy",\
 	del(churn)
 	canmove = 1
 
-/mob/living/silicon/ai/TakeDamage(zone, brute, burn)
+/mob/living/silicon/ai/TakeDamage(zone, brute, burn, tox, damage_type, disallow_limb_loss)
 	bruteloss += brute
 	fireloss += burn
 	health_update_queue |= src
@@ -1620,7 +1620,7 @@ var/list/ai_emotions = list("Happy" = "ai_happy",\
 		return
 
 	if(alert("Are you sure?",,"Yes","No") == "Yes")
-		for(var/obj/machinery/door/airlock/D in by_type[/obj/machinery/door])
+		for_by_tcl(D, /obj/machinery/door/airlock)
 			if (D.z == 1 && D.canAIControl() && D.secondsElectrified != 0 )
 				D.secondsElectrified = 0
 				count++
@@ -1642,7 +1642,7 @@ var/list/ai_emotions = list("Happy" = "ai_happy",\
 		return
 
 	if(alert("Are you sure?",,"Yes","No") == "Yes")
-		for(var/obj/machinery/door/airlock/D in by_type[/obj/machinery/door])
+		for_by_tcl(D, /obj/machinery/door/airlock)
 			if (D.z == 1 && D.canAIControl() && D.locked && D.arePowerSystemsOn())
 				D.locked = 0
 				D.update_icon()
@@ -2119,12 +2119,17 @@ proc/get_mobs_trackable_by_AI()
 
 /mob/living/silicon/ai/choose_name(var/retries = 3)
 	var/randomname = pick_string_autokey("names/ai.txt")
+	var/obj/item/organ/brain/brain_owner = src.brain.owner
 	var/newname
 	for (retries, retries > 0, retries--)
 		newname = input(src, "You are an AI. Would you like to change your name to something else?", "Name Change", randomname) as null|text
+		if (src.brain.owner != brain_owner)
+			return
 		if (!newname)
 			src.real_name = randomname
 			src.name = src.real_name
+			src.internal_pda.name = "[src]'s Internal PDA Unit"
+			src.internal_pda.owner = "[src]"
 			return
 		else
 			newname = strip_html(newname, MOB_NAME_MAX_LENGTH, 1)
@@ -2138,6 +2143,8 @@ proc/get_mobs_trackable_by_AI()
 				if (alert(src, "Use the name [newname]?", newname, "Yes", "No") == "Yes")
 					src.real_name = newname
 					src.name = newname
+					src.internal_pda.name = "[src]'s Internal PDA Unit"
+					src.internal_pda.owner = "[src]"
 					return 1
 				else
 					continue

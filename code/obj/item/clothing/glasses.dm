@@ -204,8 +204,7 @@
 		if (slot == SLOT_GLASSES)
 			assigned = user.client
 			SPAWN_DBG(-1)
-				if (!(src in processing_items))
-					processing_items.Add(src)
+				processing_items |= src
 		return
 
 	unequipped(var/mob/user)
@@ -215,6 +214,15 @@
 			assigned = null
 			processing_items.Remove(src)
 		return
+
+/obj/item/clothing/glasses/sunglasses/sechud/superhero
+	name = "superhero mask"
+	desc = "Perfect for hiding your identity while fighting crime."
+	icon_state = "superhero"
+	item_state = "superhero"
+	color_r = 1
+	color_g = 1
+	color_b = 1
 
 /obj/item/clothing/glasses/thermal
 	name = "optical thermal scanner"
@@ -399,7 +407,7 @@
 /obj/item/clothing/glasses/healthgoggles
 	name = "\improper ProDoc Healthgoggles"
 	desc = "Fitted with an advanced miniature sensor array that allows the user to quickly determine the physical condition of others."
-	icon_state = "ectoglasses"
+	icon_state = "prodocs"
 	uses_multiple_icon_states = 1
 	var/client/assigned = null
 	var/scan_upgrade = 0
@@ -443,8 +451,7 @@
 			assigned = user.client
 			SPAWN_DBG(-1)
 				//updateIcons()
-				if (!(src in processing_items))
-					processing_items.Add(src)
+				processing_items |= src
 		return
 
 	unequipped(var/mob/user)
@@ -463,8 +470,7 @@
 			else
 				src.scan_upgrade = 1
 				src.health_scan = 1
-				src.icon_state = "prodocs"
-				src.item_state = "prodocs"
+				src.icon_state = "prodocs-upgraded"
 				boutput(user, "<span class='notice'>Health scan upgrade installed.</span>")
 				playsound(src.loc ,"sound/items/Deconstruct.ogg", 80, 0)
 				user.u_equip(W)
@@ -483,8 +489,7 @@
 			return
 
 /obj/item/clothing/glasses/healthgoggles/upgraded
-	icon_state = "prodocs"
-	item_state = "prodocs"
+	icon_state = "prodocs-upgraded"
 	scan_upgrade = 1
 	health_scan = 1
 
@@ -548,8 +553,7 @@
 			assigned = user.client
 			SPAWN_DBG(-1)
 				//updateIcons()
-				if (!(src in processing_items))
-					processing_items.Add(src)
+				processing_items |= src
 		return
 
 	unequipped(var/mob/user)

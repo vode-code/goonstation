@@ -35,11 +35,11 @@
 	onMaterialChanged()
 		..()
 		if (istype(src.material))
+			genrate = 0
 			if(src.material.hasProperty("radioactive"))
-				genrate = round((material.getProperty("radioactive") / 6.333))
-			else
-				genrate = 0
-
+				genrate += round((material.getProperty("radioactive") / 6.33))
+			if(src.material.hasProperty("n_radioactive"))
+				genrate += round((material.getProperty("n_radioactive") / 4.33))
 			if(src.material.hasProperty("electrical"))
 				maxcharge = round((src.material.getProperty("electrical") ** 2) * 3.333)
 			else
@@ -79,8 +79,7 @@
 
 	New()
 		..()
-		if (!(src in processing_items))
-			processing_items.Add(src)
+		processing_items |= src
 
 /obj/item/cell/charged
 	charge = 7500
@@ -110,12 +109,11 @@
 	SPAWN_DBG(0.5 SECONDS)
 		updateicon()
 
-	if (genrate && !(src in processing_items))
-		processing_items.Add(src)
+	if (genrate)
+		processing_items |= src
 
 /obj/item/cell/disposing()
-	if (src in processing_items)
-		processing_items.Remove(src)
+	processing_items -= src
 	..()
 
 /obj/item/cell/proc/updateicon()
@@ -212,7 +210,7 @@
 
 /obj/item/cell/proc/explode()
 	if(src in bible_contents)
-		for(var/obj/item/storage/bible/B in by_type[/obj/item/storage/bible])
+		for_by_tcl(B, /obj/item/storage/bible)
 			var/turf/T = get_turf(B.loc)
 			if(T)
 				T.hotspot_expose(700,125)

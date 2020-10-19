@@ -354,10 +354,10 @@
 	SPAWN_DBG(1 SECOND)
 		playsound(src.loc, "sound/voice/chanting.ogg", 25, 0, 0)
 		playsound(src.loc, pick("sound/voice/cluwnelaugh1.ogg","sound/voice/cluwnelaugh2.ogg","sound/voice/cluwnelaugh3.ogg"), 35, 0, 0)
-		SPAWN_DBG(1.5 SECONDS)
-			user.emote("scream")
-			SPAWN_DBG(1.5 SECONDS)
-				user.implode()
+		sleep(1.5 SECONDS)
+		user.emote("scream")
+		sleep(1.5 SECONDS)
+		user.implode()
 	return 1
 
 /obj/item/clothing/shoes/cursedclown_shoes
@@ -1441,6 +1441,12 @@
 	desc = "Dracula who?"
 	body_parts_covered = TORSO
 	icon_state = "vampcape"
+
+/obj/item/clothing/under/gimmick/superhero
+	name = "crimefighting costume"
+	desc = "Definitely not just a pair of pajamas."
+	body_parts_covered = TORSO|LEGS|ARMS
+	icon_state = "superhero"
 
 /obj/item/clothing/under/gimmick/mummy
 	name = "linen body wrappings"
