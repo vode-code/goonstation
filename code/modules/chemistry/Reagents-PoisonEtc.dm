@@ -1774,6 +1774,7 @@ datum
 			fluid_b = 244
 			transparency = 255
 			depletion_rate = 0.2
+			var/hasnotreachedthreshold = TRUE
 
 			on_mob_life(var/mob/M, var/mult = 1)
 
@@ -1782,20 +1783,21 @@ datum
 
 				switch(data+=(1 * mult))
 
-					if(2) //Just started out. Everything's cool
+					if(2 to 3) //Just started out. Everything's cool
 						H.add_stam_mod_max(src.id, 75)
 					if(3 to 14)
 						if(prob(10)) do_stuff(0, H, mult)
 
-					if(15 to 24) //Ok, now it's getting worrying
+					if(14 to 24) //Ok, now it's getting worrying
 						if(prob(30)) do_stuff(1, H, mult)
-					if(25)
-						H.remove_stam_mod_max(src.id)
-						H.add_stam_mod_max(src.id, -50)
-						APPLY_MOB_PROPERTY(H, PROP_STAMINA_REGEN_BONUS, src.id, -2)
-					if(26 to 35)
+					if(24 to 35)
+						if (hasnotreachedthreshold)
+							H.remove_stam_mod_max(src.id)
+							H.add_stam_mod_max(src.id, -50)
+							APPLY_MOB_PROPERTY(H, PROP_STAMINA_REGEN_BONUS, src.id, -2)
+							hasnotreachedthreshold = FALSE
 						if(prob(30)) do_stuff(2, H, mult)
-					if(36 to INFINITY)
+					if(35 to INFINITY)
 						if(prob(min(data, 100))) //Start at 30% chance of bad stuff, increase until death
 							do_stuff(3, H, mult)
 
@@ -1807,6 +1809,8 @@ datum
 				if (!istype(H)) return
 				H.remove_stam_mod_max(src.id)
 				REMOVE_MOB_PROPERTY(H, PROP_STAMINA_REGEN_BONUS, src.id)
+				hasnotreachedthreshold = TRUE
+				H.drowsyness = min(H.drowsyness, 20)
 
 
 			proc/do_stuff(var/severity, var/mob/living/carbon/human/H, var/mult = 1)
@@ -1827,7 +1831,7 @@ datum
 								H.changeStatus("weakened", 20 * mult)
 							if(6) //Light-headedness
 								H.show_text("You feel light-headed.", "red")
-								H.drowsyness += rand(2,4)
+								H.drowsyness += rand(2,4) //MARK: mult adjust after PR goes through
 
 					if(2) //I don't feel so good (tripping, hard time breathing, randomly dropping stuff)
 						switch(rand(1,4))
@@ -1847,7 +1851,7 @@ datum
 								H.changeStatus("weakened", 20 * mult)
 							if(4) //Light-headedness
 								H.show_text("You feel like you are about to faint!", "red")
-								H.drowsyness += rand(4,7)
+								H.drowsyness += rand(4,7) //MARK: mult adjust after PR goes through
 								if(probmult(20)) H.emote(pick("faint", "collapse"))
 						if(prob(30))
 							H.make_jittery(15)
