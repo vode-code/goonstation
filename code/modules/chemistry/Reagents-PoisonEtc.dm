@@ -1526,6 +1526,9 @@ datum
 				M.TakeDamage("chest", 0, 1 * mult, 0, DAMAGE_BURN)
 				..()
 				return
+			on_remove()
+			 ..()
+			 M.misstep_chance = min(M.misstep_chance, 20)
 
 		harmful/dna_mutagen
 			name = "stable mutagen"
