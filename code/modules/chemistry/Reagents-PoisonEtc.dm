@@ -1764,6 +1764,7 @@ datum
 						REMOVE_MOB_PROPERTY(H, PROP_STAMINA_REGEN_BONUS, src.id) //Not so buff
 						logTheThing("combat", H, null, "has their AI disabled by [src.id]")
 						H.show_text("It's okay... it's okay... breathe... calm... it's okay...", "blue")
+					H.misstep_chance = min(H.misstep_chance, 20)
 				..()
 
 		harmful/strychnine
