@@ -1207,6 +1207,9 @@ datum
 				M.take_toxin_damage(1 * mult)
 				..(M, mult)
 				return
+			on_remove(var/mob/M)
+				..()
+				M.misstep_chance = min(M.misstep_chance, 20)
 
 		harmful/mutagen // COGWERKS CHEM REVISION PROJECT. magic chemical, fine as is
 			name = "unstable mutagen"
