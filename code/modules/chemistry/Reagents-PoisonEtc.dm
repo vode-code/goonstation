@@ -696,7 +696,7 @@ datum
 				//if (prob(5)) // this is way too annoying and ruins fried foods
 					//boutput(M, "<span class='alert'>You feel [pick(</span>"weak","shaky","ill")]!")
 					//M.stunned ++
-				else if (holder.get_reagent_amount(src.id) >= 25 && prob(holder.get_reagent_amount(src.id)*0.15))
+				/*else */if (holder.get_reagent_amount(src.id) >= 25 && prob(holder.get_reagent_amount(src.id)*0.15))
 					boutput(M, "<span class='alert'>Your chest feels [pick("weird","uncomfortable","nasty","gross","odd","unusual","warm")]!</span>")
 					M.take_toxin_damage(rand(1,2 * mult))
 					if (probmult(1))
@@ -1210,7 +1210,7 @@ datum
 			on_remove()
 				if(ismob(holder?.my_atom))
 					var/mob/M = holder.my_atom
-			 		M.misstep_chance = min(M.misstep_chance, 20)
+					M.misstep_chance = min(M.misstep_chance, 20)
 				..()
 
 
@@ -1530,10 +1530,10 @@ datum
 				..()
 				return
 			on_remove()
-			 	if(ismob(holder?.my_atom))
+				if(ismob(holder?.my_atom))
 					var/mob/M = holder.my_atom
-			 		M.misstep_chance = min(M.misstep_chance, 20)
-			 ..()
+					M.misstep_chance = min(M.misstep_chance, 20)
+				..()
 
 		harmful/dna_mutagen
 			name = "stable mutagen"
