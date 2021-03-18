@@ -418,6 +418,11 @@ datum
 				if(probmult(7)) M.emote(pick("twitch","drool","moan","giggle"))
 				..()
 				return
+			on_remove()
+				if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
+				..()
 
 		drug/THC
 			name = "tetrahydrocannabinol"
@@ -858,6 +863,7 @@ datum
 					var/mob/M = holder.my_atom
 					REMOVE_MOB_PROPERTY(M, PROP_STAMINA_REGEN_BONUS, "triplemeth")
 					M.remove_stun_resist_mod("triplemeth")
+					M.misstep_chance = min(M.misstep_chance, 20)
 
 				if(hascall(holder.my_atom,"removeOverlayComposition"))
 					holder.my_atom:removeOverlayComposition(/datum/overlayComposition/triplemeth)
