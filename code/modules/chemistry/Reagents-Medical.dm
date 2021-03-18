@@ -213,7 +213,11 @@ datum
 					else if (effect <= 13)
 						M.setStatus("weakened", max(M.getStatusDuration("weakened"), 50 * mult))
 						M.druggy ++
-
+			on_remove()
+				if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
+				..()
 
 		medical/teporone // COGWERKS CHEM REVISION PROJECT. marked for revision
 			name = "teporone"
@@ -553,6 +557,12 @@ datum
 						M.visible_message("<span class='alert'><b>[M.name]</b> stumbles and staggers.</span>")
 						M.dizziness += 5
 						M.setStatus("weakened", max(M.getStatusDuration("weakened"), 40 * mult))
+
+			on_remove()
+				if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
+				..()
 
 		medical/saline // COGWERKS CHEM REVISION PROJECT. magic drug, ought to use plasma or something
 			name = "saline-glucose solution"
