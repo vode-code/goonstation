@@ -1207,9 +1207,12 @@ datum
 				M.take_toxin_damage(1 * mult)
 				..(M, mult)
 				return
-			on_remove(var/mob/M)
+			on_remove()
+				if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
 				..()
-				M.misstep_chance = min(M.misstep_chance, 20)
+
 
 		harmful/mutagen // COGWERKS CHEM REVISION PROJECT. magic chemical, fine as is
 			name = "unstable mutagen"
@@ -1526,9 +1529,11 @@ datum
 				M.TakeDamage("chest", 0, 1 * mult, 0, DAMAGE_BURN)
 				..()
 				return
-			on_remove(var/mob/M)
+			on_remove()
+			 	if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
 			 ..()
-			 M.misstep_chance = min(M.misstep_chance, 20)
 
 		harmful/dna_mutagen
 			name = "stable mutagen"
