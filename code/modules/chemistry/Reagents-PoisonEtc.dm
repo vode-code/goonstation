@@ -1526,7 +1526,7 @@ datum
 				M.TakeDamage("chest", 0, 1 * mult, 0, DAMAGE_BURN)
 				..()
 				return
-			on_remove()
+			on_remove(var/mob/M)
 			 ..()
 			 M.misstep_chance = min(M.misstep_chance, 20)
 
