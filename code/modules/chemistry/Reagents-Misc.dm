@@ -2212,6 +2212,11 @@ datum
 					else if (effect <= 7)
 						M.emote("laugh")
 
+			on_remove()
+				if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
+				..()
 		fliptonium/glowing_fliptonium
 			name = "glowing fliptonium"
 			id = "glowing_fliptonium"
@@ -2405,6 +2410,11 @@ datum
 					else if (effect <= 24)
 						M.emote("faint")
 
+			on_remove()
+				if(ismob(holder?.my_atom))
+					var/mob/M = holder.my_atom
+			 		M.misstep_chance = min(M.misstep_chance, 20)
+				..()
 		diluted_transparium
 			name = "diluted transparium"
 			id = "diluted_transparium"
